@@ -37,6 +37,7 @@ package audio
 // 	audioContext, err := audio.NewContext(44100)
 // 	if err != nil {
 
+// tena enjana ty ee
 // 	}
 // 	player, err := audio.NewPlayer(audioContext, mp3Reader)
 // 	if err != nil {
