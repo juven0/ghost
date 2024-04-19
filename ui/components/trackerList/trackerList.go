@@ -1,16 +1,22 @@
 package trackerlist
 
 import (
+<<<<<<< HEAD
 	"fmt"
 	"ghost/internal/songs"
 
+=======
+>>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
+<<<<<<< HEAD
 const ROOT_DIR = "./music"
 
+=======
+>>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
 
 type Model struct {
@@ -18,15 +24,19 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
+<<<<<<< HEAD
 	ch := make(chan []songs.Song)
 	go songs.GetSongList(ROOT_DIR, ch)
 	allSong := <-ch
 	fmt.Println(allSong[0].Info.Name())
+=======
+>>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 	return nil
 }
 
 func New() *Model {
 	m := &Model{}
+<<<<<<< HEAD
 	m.initList()
 	return m
 }
@@ -43,6 +53,14 @@ func (m *Model) initList() {
 	// fmt.Printf(allSong[0].Info.Name())
 }
 
+=======
+	//***
+	//get and the list of songs
+	//***
+	return m
+}
+
+>>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
