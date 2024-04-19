@@ -1,22 +1,17 @@
 package trackerlist
 
 import (
-<<<<<<< HEAD
 	"fmt"
 	"ghost/internal/songs"
+	"ghost/ui/style"
 
-=======
->>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
-<<<<<<< HEAD
 const ROOT_DIR = "./music"
 
-=======
->>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
 
 type Model struct {
@@ -24,19 +19,15 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
-<<<<<<< HEAD
 	ch := make(chan []songs.Song)
 	go songs.GetSongList(ROOT_DIR, ch)
 	allSong := <-ch
 	fmt.Println(allSong[0].Info.Name())
-=======
->>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 	return nil
 }
 
 func New() *Model {
 	m := &Model{}
-<<<<<<< HEAD
 	m.initList()
 	return m
 }
@@ -46,21 +37,13 @@ func (m *Model) initList() {
 	go songs.GetSongList(ROOT_DIR, ch)
 	allSong := <-ch
 
-	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 500, 500)
+	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 1000, 1000)
 	for i, song := range allSong {
-		m.list.InsertItem(i, Item{title: song.Info.Name(), description: song.Info.Name(), Path: song.Path, IsPlaying: false})
+		m.list.InsertItem(i, Item{title: song.Info.Name(), description: song.Path, Path: song.Path, IsPlaying: false})
 	}
 	// fmt.Printf(allSong[0].Info.Name())
 }
 
-=======
-	//***
-	//get and the list of songs
-	//***
-	return m
-}
-
->>>>>>> c4dae7c705aa1e716e82b618fd136619b03f4e76
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -78,5 +61,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	return docStyle.Render(m.list.View())
+	return style.FocusedStyle.Render(m.list.View())
+
 }
