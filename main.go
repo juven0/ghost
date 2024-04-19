@@ -1,9 +1,19 @@
 package main
 
 import (
-	"ghost/ui"
+	trackerlist "ghost/ui/components/trackerList"
+	"os"
+
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
-	ui.Run()
+	// ui.Run()
+	m := trackerlist.New()
+	p := tea.NewProgram(m)
+
+	if err := p.Start(); err != nil {
+		os.Exit(1)
+	}
+
 }

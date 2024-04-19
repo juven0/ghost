@@ -1,10 +1,15 @@
 package trackerlist
 
 import (
+	"fmt"
+	"ghost/internal/songs"
+
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
+
+const ROOT_DIR = "./music"
 
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
 
@@ -13,15 +18,29 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
+	ch := make(chan []songs.Song)
+	go songs.GetSongList(ROOT_DIR, ch)
+	allSong := <-ch
+	fmt.Println(allSong[0].Info.Name())
 	return nil
 }
 
 func New() *Model {
 	m := &Model{}
-	//***
-	//get and the list of songs
-	//***
+	m.initList()
 	return m
+}
+
+func (m *Model) initList() {
+	ch := make(chan []songs.Song)
+	go songs.GetSongList(ROOT_DIR, ch)
+	allSong := <-ch
+
+	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 500, 500)
+	for i, song := range allSong {
+		m.list.InsertItem(i, Item{title: song.Info.Name(), description: song.Info.Name(), Path: song.Path, IsPlaying: false})
+	}
+	// fmt.Printf(allSong[0].Info.Name())
 }
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {

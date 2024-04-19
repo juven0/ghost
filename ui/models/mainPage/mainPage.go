@@ -1,27 +1,29 @@
 package mainpage
 
+import trackerlist "ghost/ui/components/trackerList"
+
 type Model struct {
-	// to do
+	trackerlist *trackerlist.Model
 }
 
 func New() *Model {
 	m := &Model{}
-	//to do
+	m.trackerlist = trackerlist.New()
 	return m
 }
 
-func (m *Model) Run() void {
-
+func (m *Model) Run() {
+	m.trackerlist.Init()
 }
 
-func (m *Model) Init() void {
+// func (m *Model) Init() void {
 
-}
+// }
 
-func (m *Model) Update() void {
+// func (m *Model) Update() void {
 
-}
+// }
 
-func (m *Model) View() string {
+// func (m *Model) View() string {
 
-}
+// }
