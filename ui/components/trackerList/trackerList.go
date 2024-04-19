@@ -37,7 +37,7 @@ func (m *Model) initList() {
 	go songs.GetSongList(ROOT_DIR, ch)
 	allSong := <-ch
 
-	m.list = list.New([]list.Item{}, list.NewDefaultDelegate(), 1000, 1000)
+	m.list = list.New([]list.Item{}, ItemDelegate{}, 512, 512)
 	for i, song := range allSong {
 		m.list.InsertItem(i, Item{title: song.Info.Name(), description: song.Path, Path: song.Path, IsPlaying: false})
 	}

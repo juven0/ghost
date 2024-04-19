@@ -18,4 +18,15 @@ var (
 			Padding(1, 2).
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(lipgloss.Color(AccentColor))
+	TrackListStyle = lipgloss.NewStyle().
+			Padding(1, 2).
+			MarginTop(-2)
+	TrackListActiveStyle = lipgloss.NewStyle().
+				Padding(0, 1).
+				MarginTop(-2).
+				Border(lipgloss.RoundedBorder()).
+				BorderForeground(AccentColor)
+	TrackTitleStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#dcdcdc")).
+			Bold(true)
 )
