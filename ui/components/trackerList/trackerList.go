@@ -1,7 +1,9 @@
 package trackerlist
 
 import (
+	"errors"
 	"fmt"
+	"ghost/internal/audio"
 	"ghost/internal/songs"
 	"ghost/ui/style"
 
@@ -56,9 +58,12 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 		if msg.String() == "enter" {
-			// ap := audio.AudioPanel{}
-			// path :=
-			// ap.Play()
+			ap := audio.AudioPanel{}
+			item, err := m.getItems(m.cursor)
+			if err != nil {
+
+			}
+			ap.Play(item.Path)
 		}
 		if msg.String() == "up" {
 			if m.cursor > 0 {
@@ -84,6 +89,19 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m *Model) View() string {
 	return style.FocusedStyle.Render(m.list.View())
 
+}
+
+func (m *Model) getItems(pos int) (Item, error) {
+	for index, item := range m.list.Items() {
+		entry, ok := item.(Item)
+		if !ok {
+			continue
+		}
+		if index == pos {
+			return entry, nil
+		}
+	}
+	return Item{}, errors.New("null")
 }
 
 func (m *Model) SetSize(w, h int) {

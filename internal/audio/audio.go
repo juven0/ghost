@@ -49,3 +49,7 @@ func (ap *AudioPanel) Play(path string) {
 
 	<-done
 }
+
+func MackStreamer(path string) {
+
+}
