@@ -21,6 +21,7 @@ type Model struct {
 	program       *tea.Program
 	list          list.Model
 	cursor        int
+	audioPanel    *audio.AudioPanel
 }
 
 func (m Model) Init() tea.Cmd {
@@ -58,12 +59,19 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 		if msg.String() == "enter" {
-			ap := audio.AudioPanel{}
 			item, err := m.getItems(m.cursor)
 			if err != nil {
 
 			}
+			ap := &audio.AudioPanel{}
 			ap.Play(item.Path)
+			m.audioPanel = ap
+		}
+		if msg.String() == "space" {
+			if m.audioPanel != nil {
+				m.audioPanel.Stop()
+				m.audioPanel = nil
+			}
 		}
 		if msg.String() == "up" {
 			if m.cursor > 0 {
