@@ -31,7 +31,10 @@ func (d ItemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 		return
 	}
 	var trackTitle string
-	trackTitle += style.TrackTitleStyle.Copy().Strikethrough(true).Render(item.title)
+	//if trarck is playing
+	trackTitle = style.AccentTextStyle.Render(style.IconPlay) + "  "
+	trackTitle += style.TrackTitleStyle.Render(item.title)
+	//trackTitle += style.TrackTitleStyle.Copy().Render(item.title)
 	if index == m.Index() {
 		fmt.Fprint(w, style.TrackListActiveStyle.MaxWidth(m.Width()).Render(trackTitle))
 	} else {

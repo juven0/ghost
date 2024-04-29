@@ -15,7 +15,10 @@ const ROOT_DIR = "./music"
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
 
 type Model struct {
-	list list.Model
+	width, height int
+	program       *tea.Program
+	list          list.Model
+	cursor        int
 }
 
 func (m Model) Init() tea.Cmd {
@@ -23,44 +26,86 @@ func (m Model) Init() tea.Cmd {
 	go songs.GetSongList(ROOT_DIR, ch)
 	allSong := <-ch
 	fmt.Println(allSong[0].Info.Name())
+	m.InitList()
 	return nil
 }
 
-func New() *Model {
-	m := &Model{}
-	m.initList()
+func New(p *tea.Program) *Model {
+	m := &Model{
+		program: p,
+		cursor:  0,
+	}
 	return m
 }
 
-func (m *Model) initList() {
+func (m *Model) InitList() {
 	ch := make(chan []songs.Song)
 	go songs.GetSongList(ROOT_DIR, ch)
 	allSong := <-ch
 
-	m.list = list.New([]list.Item{}, ItemDelegate{}, 512, 512)
+	m.list = list.New([]list.Item{}, ItemDelegate{}, 1000, 1000)
 	for i, song := range allSong {
 		m.list.InsertItem(i, Item{title: song.Info.Name(), description: song.Path, Path: song.Path, IsPlaying: false})
 	}
-	// fmt.Printf(allSong[0].Info.Name())
 }
 
-func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if msg.String() == "ctrl+c" {
 			return m, tea.Quit
+		}
+		if msg.String() == "enter" {
+			// ap := audio.AudioPanel{}
+			// path :=
+			// ap.Play()
+		}
+		if msg.String() == "up" {
+			if m.cursor > 0 {
+				m.cursor -= 1
+			}
+		}
+		if msg.String() == "down" {
+			if m.cursor < len(m.list.Items()) {
+				m.cursor += 1
+			}
 		}
 	case tea.WindowSizeMsg:
 		h, v := docStyle.GetFrameSize()
 		m.list.SetSize(msg.Width-h, msg.Height-v)
 	}
 
+	fmt.Println(m.cursor)
 	var cmd tea.Cmd
 	m.list, cmd = m.list.Update(msg)
 	return m, cmd
 }
 
-func (m Model) View() string {
+func (m *Model) View() string {
 	return style.FocusedStyle.Render(m.list.View())
 
+}
+
+func (m *Model) SetSize(w, h int) {
+	m.width = w
+	m.height = h
+	m.list.SetSize(m.width, m.height)
+}
+
+func (m *Model) SetWidth(w int) {
+	m.width = w
+	m.list.SetSize(m.width, m.height)
+}
+
+func (m *Model) Width() int {
+	return m.width
+}
+
+func (m *Model) SetHeight(h int) {
+	m.height = h
+	m.list.SetSize(m.width, m.height)
+}
+
+func (m *Model) Height() int {
+	return m.height
 }
